@@ -3,6 +3,7 @@ const inquirer = require('inquirer');
 // const express = require('express');
 // const app = express();
 const mysql = require('mysql2');
+require('console.table')
 
 // requiring classes
 const Department = require('./lib/Department');
@@ -24,15 +25,20 @@ const choices = () => {
             type: 'list',
             name: 'prompts',
             message: 'What would you like to do?',
-            choices: ['View all Departments', 'View all Roles']
+            choices: ['View all Departments', 'View all Roles', 'Add Employee', 'Quit']
         }
     ])
     .then(data => {
-        console.log(data)
+        // console.log(data)
         if (data.prompts === 'View all Departments'){
             db.query('SELECT * FROM department', function (err, results) {
-                console.log(results);
+                console.table(results);
+                choices();
               });
+        }
+        if (data.prompts === 'Quit'){
+            console.log('You have quit the app, Goodbye!')
+            return
         }
     }
         )
