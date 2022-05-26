@@ -39,7 +39,7 @@ const choices = () => {
             }
             if (data.prompts === 'View all Roles') {
                 db.query('SELECT * FROM role', function (err, results) {
-                    console.table(results)
+                    console.table(results);
                     choices();
                 });
              
@@ -55,7 +55,7 @@ const choices = () => {
                 db.query('SELECT * FROM '); // not sure what to do here
                 choices();
             }
-            
+
             if (data.prompts === 'Add Role') {
                 db.query('SELECT * FROM ') // not sure what to do here
                 choices();
