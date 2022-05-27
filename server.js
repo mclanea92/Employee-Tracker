@@ -3,7 +3,7 @@ const inquirer = require('inquirer');
 // const express = require('express');
 // const app = express();
 const mysql = require('mysql2');
-require('console.table')
+require('console.table');
 
 // requiring classes
 const Department = require('./lib/Department');
