@@ -52,8 +52,22 @@ const choices = () => {
                 
             }
             if (data.prompts === 'Add Department') {
-                db.query('SELECT * FROM '); // not sure what to do here
-                choices();
+                    return inquirer.prompt(
+                        [
+                            {
+                             type: 'input',
+                             name: 'dept',
+                             message: 'What is the name of the department?',
+                            }])
+                            .then((answer) => {
+                                const department = new Department(answer.name);
+                                const newDept = 
+                                newDept(department);
+                                console.log('Department Added');
+                                choices();
+                            });
+                
+                
             }
 
             if (data.prompts === 'Add Role') {
