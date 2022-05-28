@@ -1,15 +1,10 @@
 // requiring inquirer & express and then initilizing express
 const inquirer = require('inquirer');
-// const express = require('express');
-// const app = express();
+
 const mysql = require('mysql2');
-// const Connection = require('mysql2/typings/mysql/lib/Connection');
+
 require('console.table');
 
-// requiring classes
-// const Department = require('./lib/Department');
-// const Employee = require('./lib/Employee');
-// const Roles = require('./lib/Roles');
 
 const db = mysql.createConnection(
     {
@@ -69,16 +64,36 @@ const choices = () => {
                         })
                         choices();
                     })
-
-
                     );
-
-
             }
 
+
             if (data.prompts === 'Add Role') {
-                db.query('SELECT * FROM ') // not sure what to do here
-                choices();
+                inquirer.prompt(
+                    [
+                        {type: 'input',
+                         name: 'addRole',
+                         message: 'What role would you like to add?'
+                    },
+                    {
+                        type: 'input',
+                        name: 'salary',
+                        message: 'What is the salary for this role?'
+                    },
+                    {
+                        type: 'input',
+                        name: 'departid',
+                        message: 'What is the department code?'
+                    }])
+                    .then((answer => {
+                        var sql = `INSERT INTO role (title, salary, department_id) VALUES (?)`;
+                        db.query(sql, answer.addRole, answer.salary, answer.departid, (err, res) => {
+                            if(err) throw err;
+                            console.log('Added new role');
+                        })
+                        choices();
+                    }))
+                
             }
             if (data.prompts === 'Add Employee') {
                 db.query('SELECT * FROM ') // not sure what to do here
