@@ -53,7 +53,7 @@ const choices = () => {
 
             }
             if (data.prompts === 'Add Department') {
-                return inquirer.prompt(
+                inquirer.prompt(
                     [
                         {
                             type: 'input',
@@ -61,10 +61,11 @@ const choices = () => {
                             message: 'What is the name of the department?',
                         }])
                     .then((answer => {
+                        console.log(answer.dept)
                         var sql = `INSERT INTO department (names) VALUES (?)`;
-                        db.query(sql, answer.addDept, (err, res) => {
+                        db.query(sql, answer.dept, (err, res) => {
                             if (err) throw err;
-                            console.log('Added ' + answer.addDept + ' to departments');
+                            console.log('Added ' + answer.dept + ' to departments');
                         })
                         choices();
                     })
