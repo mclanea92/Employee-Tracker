@@ -86,8 +86,8 @@ const choices = () => {
                         message: 'What is the department code?'
                     }])
                     .then((answer => {
-                        var sql = `INSERT INTO role (title, salary, department_id) VALUES (?)`;
-                        db.query(sql, answer.addRole, answer.salary, answer.departid, (err, res) => {
+                        var sql = `INSERT INTO role (id, title, salary, department_id) VALUES (?)`;
+                        db.query(sql, answer.addRole && answer.salary && answer.departid, (err, res) => {
                             if(err) throw err;
                             console.log('Added new role');
                         })
