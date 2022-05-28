@@ -5,7 +5,7 @@ USE employeeTracker_db;
 
 CREATE TABLE department (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(30)
+    names VARCHAR(30)
 );
 
 CREATE TABLE role (

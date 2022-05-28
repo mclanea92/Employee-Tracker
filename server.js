@@ -3,7 +3,7 @@ const inquirer = require('inquirer');
 // const express = require('express');
 // const app = express();
 const mysql = require('mysql2');
-const Connection = require('mysql2/typings/mysql/lib/Connection');
+// const Connection = require('mysql2/typings/mysql/lib/Connection');
 require('console.table');
 
 // requiring classes
@@ -61,14 +61,11 @@ const choices = () => {
                             message: 'What is the name of the department?',
                         }])
                     .then((answer => {
-                        const sql = `INSERT INTO department (name)
-                                VALUES (?)`;
-                        connection.query(sql, answer.addDept, (err, result) => {
+                        var sql = `INSERT INTO department (names) VALUES (?)`;
+                        db.query(sql, answer.addDept, (err, res) => {
                             if (err) throw err;
                             console.log('Added ' + answer.addDept + ' to departments');
                         })
-
-
                         choices();
                     })
 
