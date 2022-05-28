@@ -7,9 +7,9 @@ const mysql = require('mysql2');
 require('console.table');
 
 // requiring classes
-const Department = require('./lib/Department');
-const Employee = require('./lib/Employee');
-const Roles = require('./lib/Roles');
+// const Department = require('./lib/Department');
+// const Employee = require('./lib/Employee');
+// const Roles = require('./lib/Roles');
 
 const db = mysql.createConnection(
     {
