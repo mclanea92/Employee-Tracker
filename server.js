@@ -3,6 +3,7 @@ const inquirer = require('inquirer');
 // const express = require('express');
 // const app = express();
 const mysql = require('mysql2');
+const Connection = require('mysql2/typings/mysql/lib/Connection');
 require('console.table');
 
 // requiring classes
@@ -42,32 +43,39 @@ const choices = () => {
                     console.table(results);
                     choices();
                 });
-             
+
             }
             if (data.prompts === 'View all Employees') {
                 db.query('SELECT * FROM employee', function (err, results) {
                     console.table(results);
                     choices();
                 });
-                
+
             }
             if (data.prompts === 'Add Department') {
-                    return inquirer.prompt(
-                        [
-                            {
-                             type: 'input',
-                             name: 'dept',
-                             message: 'What is the name of the department?',
-                            }])
-                            .then((answer) => {
-                                const department = new Department(answer.name);
-                                const newDept = 
-                                newDept(department);
-                                console.log('Department Added');
-                                choices();
-                            });
-                
-                
+                return inquirer.prompt(
+                    [
+                        {
+                            type: 'input',
+                            name: 'dept',
+                            message: 'What is the name of the department?',
+                        }])
+                    .then((answer => {
+                        const sql = `INSERT INTO department (name)
+                                VALUES (?)`;
+                        connection.query(sql, answer.addDept, (err, result) => {
+                            if (err) throw err;
+                            console.log('Added ' + answer.addDept + ' to departments');
+                        })
+
+
+                        choices();
+                    })
+
+
+                    );
+
+
             }
 
             if (data.prompts === 'Add Role') {
@@ -85,7 +93,7 @@ const choices = () => {
             if (data.prompts === 'Quit') {
                 console.log('You have quit the app, Goodbye!')
                 return
-                }
+            }
         }
         )
 }
