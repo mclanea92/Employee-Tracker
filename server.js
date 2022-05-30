@@ -34,7 +34,7 @@ const choices = () => {
                 });
             }
             if (data.prompts === 'View all Roles') {
-                db.query('SELECT * FROM role', function (err, results) {
+                db.query('SELECT * FROM roles', function (err, results) {
                     console.table(results);
                     choices();
                 });
@@ -86,8 +86,8 @@ const choices = () => {
                         message: 'What is the department code?'
                     }])
                     .then((answer => {
-                        var sql = `INSERT INTO role (id, title, salary, department_id) VALUES (?)`;
-                        db.query(sql, answer.addRole && answer.salary && answer.departid, (err, res) => {
+                        var sql = `INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?)`;
+                        db.query(sql, [answer.addRole, answer.salary, answer.departid], (err, res) => {
                             if(err) throw err;
                             console.log('Added new role');
                         })
