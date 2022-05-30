@@ -67,40 +67,77 @@ const choices = () => {
                     );
             }
 
-                // how to redo this?
+            // how to redo this?
             if (data.prompts === 'Add Role') {
                 inquirer.prompt(
                     [
-                        {type: 'input',
-                         name: 'addRole',
-                         message: 'What role would you like to add?'
-                    },
-                    {
-                        type: 'input',
-                        name: 'salary',
-                        message: 'What is the salary for this role?'
-                    },
-                    {
-                        type: 'input',
-                        name: 'departid',
-                        message: 'What is the department code?'
-                    }])
+                        {
+                            type: 'input',
+                            name: 'addRole',
+                            message: 'What role would you like to add?'
+                        },
+                        {
+                            type: 'input',
+                            name: 'salary',
+                            message: 'What is the salary for this role?'
+                        },
+                        {
+                            type: 'input',
+                            name: 'departid',
+                            message: 'What is the department code?'
+                        }])
                     .then((answer => {
                         var sql = `INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?)`;
                         db.query(sql, [answer.addRole, answer.salary, answer.departid], (err, res) => {
-                            if(err) throw err;
+                            if (err) throw err;
                             console.log('Added new role');
                         })
                         choices();
                     }))
-                
+
             }
             if (data.prompts === 'Add Employee') {
-                db.query('SELECT * FROM ') // not sure what to do here
+                db.query('SELECT * FROM ')
                 choices();
             }
             if (data.prompts === 'Update Employee Role') {
-                db.query('SELECT * FROM ') // not sure what to do here
+                // select all employees
+                db.query('SELECT * FROM employee', function (err, results) {
+                    console.log(results);
+                    inquirer.prompt(
+                        [
+                            {
+                                type: 'list',
+                                name: 'employee',
+                                message: 'Please select employee to update',
+                                choices: results.map(function (employee) {
+                                    return employee.first_name + employee.last_name;
+                                })
+                            }
+                        ]
+                    ).then(function (data) {
+                        db.query('SELECT * FROM roles') // copy part from above
+                        inquirer.prompt(
+                            [
+                                {
+                                    type: 'list',
+                                    name: 'newrole',
+                                    message: 'Please choose new role',
+                                    choices: results.map(function (newrole) {
+                                        return newrole.title;
+                                    })
+                                }
+                            ]
+                        )
+                    })
+
+                })
+
+
+                console.log()
+
+                // select new role for employee
+                // run the query to update new role
                 choices();
             }
             if (data.prompts === 'Quit') {
