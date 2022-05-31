@@ -115,10 +115,9 @@ const choices = () => {
                                 })
                             }
                         ]
-                    )
-                    .then (function (data) {
+                    ).then(function (results) {
                         db.query('SELECT * FROM roles', function (err, data) {
-                            // console.log(data);
+                            console.log(data);
                             inquirer.prompt(
                                 [
                                     {
