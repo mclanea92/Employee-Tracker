@@ -128,6 +128,8 @@ const choices = () => {
                     // console.log('this is results of inquirer' + results)
                     .then(function (results) {
                         console.log(results);
+                        // save employee from results
+                        
                         
                         
                         db.query('SELECT * FROM roles', function (err, data) {
@@ -146,6 +148,9 @@ const choices = () => {
                                 ]
                                 )
                             })
+                            // create .then
+                            // capture new role from prompt
+                            // use employee name and role to query and update database
                 })})
 
 
