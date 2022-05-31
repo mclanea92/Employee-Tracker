@@ -111,6 +111,37 @@ function addDepartment() {
     })
 };
 
+function addRole() {
+    inquirer.prompt(
+        [
+            {
+                type: 'input',
+                name: 'addRole',
+                message: 'What role would you like to add?'
+            },
+            {
+                type: 'input',
+                name: 'salary',
+                message: 'What is the salary for this role?'
+            },
+            {
+                type: 'input',
+                name: 'departid',
+                message: 'What is the department code?'
+            }])
+            .then((answer => {
+                var sql = `INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?)`;
+                db.query(sql, [answer.addRole, answer.salary, answer.departid], (err, res) => {
+                    if (err) throw err;
+                    console.log('Added new role');
+                })
+                choices();
+            }))
+            
+        }
+
+  
+
 
 
 
