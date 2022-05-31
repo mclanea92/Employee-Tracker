@@ -182,26 +182,52 @@ function selectRole() {
                   choices: selectRole()
                 },
                 {
-                    name: "choice",
-                    type: "rawlist",
+                    name: "manager",
+                    type: "list",
                     message: "Whats their managers name?",
                     choices: selectManager()
                 }
-            ]).then(function (val) {
-              var roleId = selectRole().indexOf(val.role) + 1
-              var managerId = selectManager().indexOf(val.choice) + 1
-              connection.query("INSERT INTO employee SET ?", 
-              {
-                  first_name: val.firstName,
-                  last_name: val.lastName,
-                  manager_id: managerId,
-                  role_id: roleId
-                  
-              }, function(err){
-                  if (err) throw err
-                  console.table(val)
-                  startPrompt()
-              })
-        
-          })
-        }
+            ])
+            .then(response => {
+                var MID = 0;
+                var RID = 0;
+               
+    
+                db.query('SELECT id FROM roles WHERE title = ?', [response.role], (error, result) => {
+                    if (error) throw error;
+    
+                    result.forEach(id => {
+                        RID = id.id;
+                    })
+    
+                    var managerFirstName = "";
+    
+                    for (var i = 0; i < response.length; i++) {
+                        if (response.manager.charAt(i) === " ") {
+                            break;
+                        } else {
+                            managerFirstName += response.manager.charAt(i);
+                        }
+                    }
+    
+                    db.query('SELECT id FROM employee WHERE first_name = ?', [managerFirstName], (error, nextResult) => {
+                        if (error) throw error;
+    
+                        nextResult.forEach(id => {
+                            MID = id.id;
+                        })
+    
+                        db.query('INSERT INTO employee SET ?', {
+                            first_name: response.firstName,
+                            last_name: response.lastName,
+                            role_id: RID,
+                            manager_id: MID
+                        }, (error, result) => {
+                            if (error) throw error;
+                        })
+    
+                        choices();
+                    });
+                });
+            });
+    };
