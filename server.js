@@ -86,4 +86,8 @@ function viewAllRoles() {
     
 };
 
+function viewAllEmployees() {
+    db.query('SELECT * FROM employee')
+}
+
 

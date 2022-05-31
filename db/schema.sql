@@ -1,17 +1,16 @@
---CREATING OUR DATABASE --
+
 DROP DATABASE IF EXISTS employee_trackerDB;
 
 CREATE DATABASE employee_trackerDB;
 
 USE employee_trackerDB;
 
--- DEPARTMENT TABLE ----
 CREATE TABLE department (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   names VARCHAR(30)
  
 );
--- DEPARTMENT TABLE ----
+
 CREATE TABLE roles (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR(30),
@@ -19,7 +18,7 @@ CREATE TABLE roles (
   department_id INT,
   FOREIGN KEY (department_id) REFERENCES department(id)
 );
--- EMPLOYEE ROLE TABLE ----
+
 CREATE TABLE employee (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   first_name VARCHAR(30),
