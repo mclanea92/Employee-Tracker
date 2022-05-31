@@ -70,8 +70,7 @@ function choices() {
         }})};
 
 function viewAllDepartments() {
-    db.query('SELECT * FROM department',
-    function(err, res) {
+    db.query('SELECT * FROM department', function(err, res) {
         if (err) throw err
         console.table(res)
         choices();
@@ -87,7 +86,31 @@ function viewAllRoles() {
 };
 
 function viewAllEmployees() {
-    db.query('SELECT * FROM employee')
-}
+    db.query('SELECT * FROM employee', function(err, res) {
+        if (err) throw err
+        console.table(res)
+        choices();
+    } )
+};
+
+function addDepartment() {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'name',
+            message: 'What is the name for the new Department?'
+        }
+    ])
+    .then(function(res) {
+        var query = db.query('INSERT INTO department SET ?', {name: res.name},
+        function(err){
+            if (err) throw err
+            console.table(res);
+            choices();
+       })
+    })
+};
+
+
 
 
