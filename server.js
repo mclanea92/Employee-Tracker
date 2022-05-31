@@ -103,30 +103,36 @@ const choices = () => {
             if (data.prompts === 'Update Employee Role') {
                 // select all employees
                 db.query('SELECT * FROM employee', function (err, results) {
-                    console.log(results);
+                    // console.log('not this one ' + results);
+                    const employees = results.map(function (employee) {
+                        return employee.first_name + ' ' + employee.last_name;
+                    })
                     inquirer.prompt(
                         [
                             {
                                 type: 'list',
                                 name: 'employee',
                                 message: 'Please select employee to update',
-                                choices: results.map(function (employee) {
-                                    return employee.first_name + employee.last_name;
-                                })
+                                choices: employees
+                                
                             }
                         ]
-                    ).then(function (results) {
+                    )
+                    // console.log('this is results of inquirer' + results)
+                    .then( (results) {
+                        console.log(results);
+                        const newrole = results.map(function (newrole){
+                            return newrole.title;
+                        })
                         db.query('SELECT * FROM roles', function (err, data) {
-                            console.log(data);
+                            
                             inquirer.prompt(
                                 [
                                     {
                                         type: 'list',
                                         name: 'newrole',
                                         message: 'Please choose new role',
-                                        choices: results.map(function (newrole) {
-                                            return newrole.title;
-                                        })
+                                        choices: newrole
                                     }
                                 ]
                             )
@@ -135,7 +141,7 @@ const choices = () => {
                 })
 
 
-                console.log()
+                
 
                 // select new role for employee
                 // run the query to update new role
