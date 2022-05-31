@@ -26,28 +26,32 @@ const choices = () => {
         }
     ])
         .then(data => {
-            // console.log(data)
+            console.log(data)
             if (data.prompts === 'View all Departments') {
+                console.log('View Departments Choosen')
                 db.query('SELECT * FROM department', function (err, results) {
                     console.table(results);
                     choices();
                 });
             }
             if (data.prompts === 'View all Roles') {
+                console.log('View roles Choosen')
                 db.query('SELECT * FROM roles', function (err, results) {
                     console.table(results);
                     choices();
                 });
-
+                
             }
             if (data.prompts === 'View all Employees') {
+                console.log('View employees Choosen')
                 db.query('SELECT * FROM employee', function (err, results) {
                     console.table(results);
                     choices();
                 });
-
+                
             }
             if (data.prompts === 'Add Department') {
+                console.log('add department Choosen')
                 inquirer.prompt(
                     [
                         {
@@ -55,20 +59,21 @@ const choices = () => {
                             name: 'dept',
                             message: 'What is the name of the department?',
                         }])
-                    .then((answer => {
-                        console.log(answer.dept)
-                        var sql = `INSERT INTO department (names) VALUES (?)`;
-                        db.query(sql, answer.dept, (err, res) => {
-                            if (err) throw err;
-                            console.log('Added ' + answer.dept + ' to departments');
+                        .then((answer => {
+                            console.log(answer.dept)
+                            var sql = `INSERT INTO department (names) VALUES (?)`;
+                            db.query(sql, answer.dept, (err, res) => {
+                                if (err) throw err;
+                                console.log('Added ' + answer.dept + ' to departments');
+                            })
+                            choices();
                         })
-                        choices();
-                    })
-                    );
-            }
-
-            // how to redo this?
-            if (data.prompts === 'Add Role') {
+                        );
+                    }
+                    
+                    // how to redo this?
+                    if (data.prompts === 'Add Role') {
+                console.log('add role Choosen')
                 inquirer.prompt(
                     [
                         {
@@ -86,21 +91,23 @@ const choices = () => {
                             name: 'departid',
                             message: 'What is the department code?'
                         }])
-                    .then((answer => {
-                        var sql = `INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?)`;
-                        db.query(sql, [answer.addRole, answer.salary, answer.departid], (err, res) => {
-                            if (err) throw err;
-                            console.log('Added new role');
-                        })
-                        choices();
-                    }))
-
-            }
-            if (data.prompts === 'Add Employee') {
+                        .then((answer => {
+                            var sql = `INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?)`;
+                            db.query(sql, [answer.addRole, answer.salary, answer.departid], (err, res) => {
+                                if (err) throw err;
+                                console.log('Added new role');
+                            })
+                            choices();
+                        }))
+                        
+                    }
+                    if (data.prompts === 'Add Employee') {
+                console.log('add employee Choosen')
                 db.query('SELECT * FROM ')
                 choices();
             }
             if (data.prompts === 'Update Employee Role') {
+                console.log('update employee Choosen')
                 // select all employees
                 db.query('SELECT * FROM employee', function (err, results) {
                     // console.log('not this one ' + results);
@@ -121,11 +128,13 @@ const choices = () => {
                     // console.log('this is results of inquirer' + results)
                     .then(function (results) {
                         console.log(results);
-                        const newrole = results.map(function (newrole){
-                            return newrole.title;
-                        })
+                        
+                        
                         db.query('SELECT * FROM roles', function (err, data) {
-                            
+                            const newrole = data.map(function (newrole){
+                                return newrole.title;
+
+                            })
                             inquirer.prompt(
                                 [
                                     {
@@ -135,10 +144,9 @@ const choices = () => {
                                         choices: newrole
                                     }
                                 ]
-                            )
-                        })
-                    })
-                })
+                                )
+                            })
+                })})
 
 
                 
