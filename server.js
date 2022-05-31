@@ -70,12 +70,20 @@ function choices() {
         }})};
 
 function viewAllDepartments() {
-    db.query("SELECT employee.first_name, employee.last_name, department.names AS Department FROM employee JOIN roles ON employee.role_id = role.id JOIN department ON role.department_id = department.id ORDER BY employee.id;",
+    db.query('SELECT * FROM department',
     function(err, res) {
         if (err) throw err
         console.table(res)
-        choices()
+        choices();
     })
+};
+
+function viewAllRoles() {
+    db.query('SELECT * FROM roles', function (err, res) {
+        console.table(res);
+        choices();
+    })
+    
 };
 
 
