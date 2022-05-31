@@ -119,7 +119,7 @@ const choices = () => {
                         ]
                     )
                     // console.log('this is results of inquirer' + results)
-                    .then( (results) {
+                    .then(function (results) {
                         console.log(results);
                         const newrole = results.map(function (newrole){
                             return newrole.title;
