@@ -11,9 +11,9 @@ const db = mysql.createConnection(
         host: 'localhost',
         user: 'root',
         password: '',
-        database: 'employeeTracker_db'
+        database: 'employee_trackerDB'
     },
-    console.log('connected to employeeTracker_db')
+    console.log('connected to employee_trackerDB')
 );
 
 db.connect(function(err) {
@@ -67,7 +67,15 @@ function choices() {
             quitApp();
             break
 
-       
+        }})};
 
-        }
-        })};
+function viewAllDepartments() {
+    db.query("SELECT employee.first_name, employee.last_name, department.names AS Department FROM employee JOIN roles ON employee.role_id = role.id JOIN department ON role.department_id = department.id ORDER BY employee.id;",
+    function(err, res) {
+        if (err) throw err
+        console.table(res)
+        choices()
+    })
+};
+
+
