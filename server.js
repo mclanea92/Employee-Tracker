@@ -3,7 +3,7 @@ const inquirer = require('inquirer');
 
 const mysql = require('mysql2');
 
-require('console.table');
+const table = require('console.table');
 
 
 const db = mysql.createConnection(
@@ -16,156 +16,58 @@ const db = mysql.createConnection(
     console.log('connected to employeeTracker_db')
 );
 
-const choices = () => {
-    return inquirer.prompt([
+db.connect(function(err) {
+    if (err) throw err
+    console.log('you are now connected to the database')
+    choices();
+});
+
+
+function choices() {
+    inquirer.prompt([
         {
             type: 'list',
             name: 'prompts',
-            message: 'What would you like to do?',
+            message: "What would you like to do?",
             choices: ['View all Departments', 'View all Roles', 'View all Employees', 'Add Department', 'Add Role', 'Add Employee', 'Update Employee Role', 'Quit']
+
         }
-    ])
-        .then(data => {
-            console.log(data)
-            if (data.prompts === 'View all Departments') {
-                console.log('View Departments Choosen')
-                db.query('SELECT * FROM department', function (err, results) {
-                    console.table(results);
-                    choices();
-                });
-            }
-            if (data.prompts === 'View all Roles') {
-                console.log('View roles Choosen')
-                db.query('SELECT * FROM roles', function (err, results) {
-                    console.table(results);
-                    choices();
-                });
-                
-            }
-            if (data.prompts === 'View all Employees') {
-                console.log('View employees Choosen')
-                db.query('SELECT * FROM employee', function (err, results) {
-                    console.table(results);
-                    choices();
-                });
-                
-            }
-            if (data.prompts === 'Add Department') {
-                console.log('add department Choosen')
-                inquirer.prompt(
-                    [
-                        {
-                            type: 'input',
-                            name: 'dept',
-                            message: 'What is the name of the department?',
-                        }])
-                        .then((answer => {
-                            console.log(answer.dept)
-                            var sql = `INSERT INTO department (names) VALUES (?)`;
-                            db.query(sql, answer.dept, (err, res) => {
-                                if (err) throw err;
-                                console.log('Added ' + answer.dept + ' to departments');
-                            })
-                            choices();
-                        })
-                        );
-                    }
-                    
-                    // how to redo this?
-                    if (data.prompts === 'Add Role') {
-                console.log('add role Choosen')
-                inquirer.prompt(
-                    [
-                        {
-                            type: 'input',
-                            name: 'addRole',
-                            message: 'What role would you like to add?'
-                        },
-                        {
-                            type: 'input',
-                            name: 'salary',
-                            message: 'What is the salary for this role?'
-                        },
-                        {
-                            type: 'input',
-                            name: 'departid',
-                            message: 'What is the department code?'
-                        }])
-                        .then((answer => {
-                            var sql = `INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?)`;
-                            db.query(sql, [answer.addRole, answer.salary, answer.departid], (err, res) => {
-                                if (err) throw err;
-                                console.log('Added new role');
-                            })
-                            choices();
-                        }))
-                        
-                    }
-                    if (data.prompts === 'Add Employee') {
-                console.log('add employee Choosen')
-                db.query('SELECT * FROM ')
-                choices();
-            }
-            if (data.prompts === 'Update Employee Role') {
-                console.log('update employee Choosen')
-                // select all employees
-                db.query('SELECT * FROM employee', function (err, results) {
-                    // console.log('not this one ' + results);
-                    const employees = results.map(function (employee) {
-                        return employee.first_name + ' ' + employee.last_name;
-                    })
-                    inquirer.prompt(
-                        [
-                            {
-                                type: 'list',
-                                name: 'employee',
-                                message: 'Please select employee to update',
-                                choices: employees
-                                
-                            }
-                        ]
-                    )
-                    // console.log('this is results of inquirer' + results)
-                    .then(function (results) {
-                        console.log(results);
-                        // save employee from results
-                        
-                        
-                        
-                        db.query('SELECT * FROM roles', function (err, data) {
-                            const newrole = data.map(function (newrole){
-                                return newrole.title;
+    ]
+    ).then(function(data) {
+        switch (data.prompts) {
+            case 'View all Departments':
+            viewAllDepartments();
+            break;
 
-                            })
-                            inquirer.prompt(
-                                [
-                                    {
-                                        type: 'list',
-                                        name: 'newrole',
-                                        message: 'Please choose new role',
-                                        choices: newrole
-                                    }
-                                ]
-                                )
-                            })
-                            // create .then
-                            // capture new role from prompt
-                            // use employee name and role to query and update database
-                })})
+            case 'View all Roles':
+            viewAllRoles();
+            break;
 
+            case 'View all Employees':
+            viewAllEmployees();
+            break;
 
-                
+            case 'Add Department':
+            addDepartment();
+            break;
 
-                // select new role for employee
-                // run the query to update new role
-                choices();
-            }
-            if (data.prompts === 'Quit') {
-                console.log('You have quit the app, Goodbye!')
-                return
-            }
+            case 'Add Role':
+            addRole();
+            break;
+
+            case 'Add Employee':
+            addEmployee();
+            break;
+
+            case 'Update Employee Role':
+            updateEmployee();
+            break;
+
+            case 'Quit':
+            quitApp();
+            break
+
+       
+
         }
-        )
-}
-
-choices();
+        })};
