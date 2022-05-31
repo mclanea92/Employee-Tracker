@@ -115,22 +115,23 @@ const choices = () => {
                                 })
                             }
                         ]
-                    ).then(function (data) {
-                        db.query('SELECT * FROM roles') // copy part from above
-                        inquirer.prompt(
-                            [
-                                {
-                                    type: 'list',
-                                    name: 'newrole',
-                                    message: 'Please choose new role',
-                                    choices: results.map(function (newrole) {
-                                        return newrole.title;
-                                    })
-                                }
-                            ]
-                        )
+                    ).then (function (data) {
+                        db.query('SELECT * FROM roles', function (err, data) {
+                            // console.log(data);
+                            inquirer.prompt(
+                                [
+                                    {
+                                        type: 'list',
+                                        name: 'newrole',
+                                        message: 'Please choose new role',
+                                        choices: results.map(function (newrole) {
+                                            return newrole.title;
+                                        })
+                                    }
+                                ]
+                            )
+                        })
                     })
-
                 })
 
 
