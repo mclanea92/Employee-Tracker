@@ -140,6 +140,38 @@ function addRole() {
             
         }
 
+        function addEmployee() {
+            inquirer.prompt([
+                {
+                    type: 'input',
+                    name: 'fname',
+                    message: 'What is this employees first name?'
+                },
+                {
+                    type: 'input',
+                    name: 'lname',
+                    message: 'What is this employees last name?'   
+                },
+                {   type: 'input',
+                    name: 'managerID',
+                    message: 'What is this employees manager id?',
+                },
+                {
+                    type: 'input',
+                    name: 'newID',
+                    message: 'What is this new employees ID number?'
+                }
+            ])
+                .then((answer => {
+                    var msql = `INSERT INTO employee (first_name, last_name, manager_id) VALUES (?, ?, ?, ?)`;
+                    db.query(msql, [answer.fname, answer.lname, answer.managerID, answer.newID], (err, res) => {
+                        if (err) throw err;
+                        console.log('Added a new Employee!');
+                    })
+                    choices();
+                }))
+        }
+
   
 
 
