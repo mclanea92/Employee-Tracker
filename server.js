@@ -5,7 +5,7 @@ const mysql = require('mysql2');
 
 const table = require('console.table');
 const Department = require('./lib/Department')
-const {getDept, newDept, deptArrFill, employeeArrFill, roleArrFill} = require('./lib/helper');
+const {getDept, newDept, deptArrFill, employeeArrFill, roleArrFill, updateRole, getEmployees} = require('./lib/helper');
 let employeeArr = employeeArrFill();
 let roleArr = roleArrFill();
 const db = mysql.createConnection(
@@ -66,7 +66,7 @@ function choices() {
             break;
 
             case 'Quit':
-            quitApp();
+            quit();
             break
 
         }})};
@@ -153,30 +153,19 @@ function addRole() {
         }
         
 
-        var managersArr = [];
-function selectManager() {
-  db.query("SELECT first_name, last_name FROM employee WHERE manager_id IS NULL", function(err, res) {
-    if (err) throw err
-    for (var i = 0; i < res.length; i++) {
-      managersArr.push(res[i].first_name);
-    }
-
-  })
-  return managersArr;
-}
-// var roleArr = [];
-// function selectRole() {
-//   db.query("SELECT * FROM roles", function(err, res) {
+//         var managersArr = [];
+// function selectManager() {
+//   db.query("SELECT first_name, last_name FROM employee WHERE manager_id IS NULL", function(err, res) {
 //     if (err) throw err
 //     for (var i = 0; i < res.length; i++) {
-//       roleArr.push(res[i].title);
+//       managersArr.push(res[i].first_name);
 //     }
 
 //   })
-//   return roleArr;
+//   return managersArr;
 // }
 
-const addEmployee = () => {
+function addEmployee() {
     return inquirer
         .prompt([{
             type: 'input',
@@ -217,53 +206,34 @@ const addEmployee = () => {
                 if (err) throw err;
                 console.log("Added New Employee")
             })
-            // newEmployee(employee);
-            // console.log('Employee Added!');
-            // employees = getEmployees();
-            // employeeArr = employeeArrFill();
             return choices();
         })    
 };
 
-// function addEmployee() { 
-//     inquirer.prompt([
-//         {
-//           name: "firstname",
-//           type: "input",
-//           message: "Enter their first name "
-//         },
-//         {
-//           name: "lastname",
-//           type: "input",
-//           message: "Enter their last name "
-//         },
-//         {
-//           name: "role",
-//           type: "list",
-//           message: "What is their role? ",
-//           choices: selectRole()
-//         },
-//         {
-//             name: "choice",
-//             type: "rawlist",
-//             message: "Whats their managers name?",
-//             choices: selectManager()
-//         }
-//     ]).then(function (val) {
-//       var roleId = selectRole().indexOf(val.role) + 1
-//       var managerId = selectManager().indexOf(val.choice) + 1
-//       db.query("INSERT INTO employee SET ?", 
-//       {
-//           first_name: val.firstName,
-//           last_name: val.lastName,
-//           manager_id: managerId,
-//           role_id: roleId
-          
-//       }, function(err){
-//           if (err) throw err
-//           console.table(val)
-//           choices()
-//       })
+function updateEmployee() {
+    return inquirer
+    .prompt([{
+        type: 'list',
+        name: 'employee',
+        message: 'Which employee would you like to update?',
+        choices: employeeArr
+    },{
+        type: 'list',
+        name: 'newRole',
+        message: 'What is the employees new role?',
+        choices: roleArr
+    }])
+    .then((ans) => {
+        updateRole(ans);
+        console.log('Role Updated!');
+        employees = getEmployees();
+        employeeArr = employeeArrFill();
+        return choices();
+    })    
+};
 
-//   })
-// }
+
+function quit() {
+    console.log('You have Quit the app, goodbye!')
+    return
+}
