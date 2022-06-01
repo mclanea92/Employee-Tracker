@@ -2,12 +2,13 @@
 const inquirer = require('inquirer');
 
 const mysql = require('mysql2');
-
-const table = require('console.table');
+require('console.table');
 const Department = require('./lib/Department')
 const {getDept, newDept, deptArrFill, employeeArrFill, roleArrFill, updateRole, getEmployees} = require('./lib/helper');
 let employeeArr = employeeArrFill();
 let roleArr = roleArrFill();
+
+// connected to mysql
 const db = mysql.createConnection(
     {
         host: 'localhost',
@@ -24,7 +25,7 @@ db.connect(function(err) {
     choices();
 });
 
-
+// where the beginning questions are asked to the user
 function choices() {
     inquirer.prompt([
         {
@@ -35,6 +36,7 @@ function choices() {
 
         }
     ]
+    // swith used to go through the options with the functions below
     ).then(function(data) {
         switch (data.prompts) {
             case 'View all Departments':
@@ -71,6 +73,7 @@ function choices() {
 
         }})};
 
+        // views all departments
 function viewAllDepartments() {
     db.query('SELECT * FROM department', function(err, res) {
         if (err) throw err
@@ -79,6 +82,7 @@ function viewAllDepartments() {
     })
 };
 
+// views all roles
 function viewAllRoles() {
     db.query('SELECT * FROM roles', function (err, res) {
         console.table(res);
@@ -87,6 +91,7 @@ function viewAllRoles() {
     
 };
 
+// views all employees
 function viewAllEmployees() {
     db.query('SELECT * FROM employee', function(err, res) {
         if (err) throw err
@@ -96,7 +101,7 @@ function viewAllEmployees() {
 };
 
 
-
+// where a department is added
 function addDepartment() {
     return inquirer
         .prompt([{
@@ -122,7 +127,7 @@ function addDepartment() {
 };
 
 
-
+// where a role is added
 function addRole() {
     inquirer.prompt(
         [
@@ -152,19 +157,7 @@ function addRole() {
             
         }
         
-
-//         var managersArr = [];
-// function selectManager() {
-//   db.query("SELECT first_name, last_name FROM employee WHERE manager_id IS NULL", function(err, res) {
-//     if (err) throw err
-//     for (var i = 0; i < res.length; i++) {
-//       managersArr.push(res[i].first_name);
-//     }
-
-//   })
-//   return managersArr;
-// }
-
+// where a new employee is added
 function addEmployee() {
     return inquirer
         .prompt([{
@@ -210,6 +203,7 @@ function addEmployee() {
         })    
 };
 
+// how to update an employee role
 function updateEmployee() {
     return inquirer
     .prompt([{
@@ -232,7 +226,7 @@ function updateEmployee() {
     })    
 };
 
-
+// to quit the application
 function quit() {
     console.log('You have Quit the app, goodbye!')
     return
