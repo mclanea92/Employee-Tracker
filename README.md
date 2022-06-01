@@ -18,6 +18,7 @@ My task was to write a server, schema and seeds files to get the terminal to upd
 https://github.com/mclanea92/Employee-Tracker
 
 ## Video Tutorial
+https://drive.google.com/file/d/1z92sjyw7uxX6osK1FeQowx2GssQU1ByV/view?usp=sharing
 
 
 ## Acceptance Criteria
