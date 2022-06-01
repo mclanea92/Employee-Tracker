@@ -1,3 +1,5 @@
+-- below is the information added to the tables after the tables are created.
+
 INSERT INTO department (names)
 VALUES ("Sales"), -- dept 1
        ("Engineering"), -- dept 2

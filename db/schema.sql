@@ -1,10 +1,12 @@
 
+-- creates new blank database
 DROP DATABASE IF EXISTS employee_trackerDB;
 
 CREATE DATABASE employee_trackerDB;
 
 USE employee_trackerDB;
 
+-- creates tables for department, roles and employees
 CREATE TABLE department (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   names VARCHAR(30)
