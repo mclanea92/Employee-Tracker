@@ -4,8 +4,8 @@ const inquirer = require('inquirer');
 const mysql = require('mysql2');
 
 const table = require('console.table');
-
-
+const Department = require('./lib/Department')
+const {getDept, newDept, deptArrFill} = require('./lib/helper')
 const db = mysql.createConnection(
     {
         host: 'localhost',
@@ -93,23 +93,33 @@ function viewAllEmployees() {
     } )
 };
 
+
+
 function addDepartment() {
-    inquirer.prompt([
-        {
+    return inquirer
+        .prompt([{
             type: 'input',
             name: 'name',
-            message: 'What is the name for the new Department?'
-        }
-    ])
-    .then(function(res) {
-        var query = db.query('INSERT INTO department SET ?', {name: res.name},
-        function(err){
-            if (err) throw err
-            console.table(res);
-            choices();
-       })
-    })
+            message: 'What is the name of the department?',
+            validate: function(name) {
+                if (!name) {
+                    console.log('You must enter a name!')
+                    return false;
+                }
+                return true;
+            }
+        }])  
+        .then((ans) => {
+            const department = new Department(ans.name);
+            newDept(department);
+            console.log('Department Added!');
+            departments = getDept();
+            deptArr = deptArrFill();
+            return choices();
+        })  
 };
+
+
 
 function addRole() {
     inquirer.prompt(
@@ -139,6 +149,7 @@ function addRole() {
             }))
             
         }
+        
 
         var managersArr = [];
 function selectManager() {
@@ -163,71 +174,45 @@ function selectRole() {
   return roleArr;
 }
 
-        function addEmployee() { 
-            inquirer.prompt([
-                {
-                  name: "firstname",
-                  type: "input",
-                  message: "Enter their first name "
-                },
-                {
-                  name: "lastname",
-                  type: "input",
-                  message: "Enter their last name "
-                },
-                {
-                  name: "role",
-                  type: "list",
-                  message: "What is their role? ",
-                  choices: selectRole()
-                },
-                {
-                    name: "manager",
-                    type: "list",
-                    message: "Whats their managers name?",
-                    choices: selectManager()
-                }
-            ])
-            .then(response => {
-                var MID = 0;
-                var RID = 0;
-               
-    
-                db.query('SELECT id FROM roles WHERE title = ?', [response.role], (error, result) => {
-                    if (error) throw error;
-    
-                    result.forEach(id => {
-                        RID = id.id;
-                    })
-    
-                    var managerFirstName = "";
-    
-                    for (var i = 0; i < response.length; i++) {
-                        if (response.manager.charAt(i) === " ") {
-                            break;
-                        } else {
-                            managerFirstName += response.manager.charAt(i);
-                        }
-                    }
-    
-                    db.query('SELECT id FROM employee WHERE first_name = ?', [managerFirstName], (error, nextResult) => {
-                        if (error) throw error;
-    
-                        nextResult.forEach(id => {
-                            MID = id.id;
-                        })
-    
-                        db.query('INSERT INTO employee SET ?', {
-                            first_name: response.firstName,
-                            last_name: response.lastName,
-                            role_id: RID,
-                            manager_id: MID
-                        }, (error, result) => {
-                            if (error) throw error;
-                        })
-    
-                        choices();
-                    });
-                });
-            });
-    };
+function addEmployee() { 
+    inquirer.prompt([
+        {
+          name: "firstname",
+          type: "input",
+          message: "Enter their first name "
+        },
+        {
+          name: "lastname",
+          type: "input",
+          message: "Enter their last name "
+        },
+        {
+          name: "role",
+          type: "list",
+          message: "What is their role? ",
+          choices: selectRole()
+        },
+        {
+            name: "choice",
+            type: "rawlist",
+            message: "Whats their managers name?",
+            choices: selectManager()
+        }
+    ]).then(function (val) {
+      var roleId = selectRole().indexOf(val.role) + 1
+      var managerId = selectManager().indexOf(val.choice) + 1
+      db.query("INSERT INTO employee SET ?", 
+      {
+          first_name: val.firstName,
+          last_name: val.lastName,
+          manager_id: managerId,
+          role_id: roleId
+          
+      }, function(err){
+          if (err) throw err
+          console.table(val)
+          choices()
+      })
+
+  })
+}
