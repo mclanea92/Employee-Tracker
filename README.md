@@ -47,7 +47,7 @@ THEN I am prompted to select an employee to update and their new role and this i
 ## Tests
 To test this application, you will have to download it to your code editor.  Then download the npm packages that are required.  You will then run mysql and add the schema & seeds files to get the starter tables made with the current employees.  After that has been completed, you will run node server.js and the prompts will start for the user to work with.
 
-## Questions
+## Contact/Questions
 If you have any questions about this project, please feel free to contact me at mclanea92@gmail.com
 
 ## Screenshots
