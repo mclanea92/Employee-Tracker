@@ -43,6 +43,7 @@ WHEN I choose to update an employee role
 THEN I am prompted to select an employee to update and their new role and this information is updated in the database 
 ```
 
+
 ## Tests
 To test this application, you will have to download it to your code editor.  Then download the npm packages that are required.  You will then run mysql and add the schema & seeds files to get the starter tables made with the current employees.  After that has been completed, you will run node server.js and the prompts will start for the user to work with.
 
@@ -62,3 +63,27 @@ The photo below shows how the schema is set up for the database and what is requ
 This final photo is of the seeds file that fills in the schema database with the beginner info
 
 ![photo of the seeds sql file](./images/seeds.png)
+
+
+## License
+MIT License
+
+Copyright (c) 2022 Adam McLane
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
